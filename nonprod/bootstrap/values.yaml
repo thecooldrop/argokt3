@@ -1,0 +1,44 @@
+argo-cd:
+  server:
+    configEnabled: true
+    config:
+      repositories: |
+        - type: git
+          url: https://github.com/thecooldrop/argokt3.git
+        - name: argo-helm
+          type: helm
+          url: https://argoproj.github.io/argo-helm
+      additionalApplications:
+      - name: argo
+        namespace: argocd
+        destination:
+          namespace: argocd
+          server: https://kubernetes.default.svc
+        project: argocd
+        source:
+          helm:
+            version: v3
+            valueFiles:
+            - values.yaml
+          path: nonprod/bootstrap
+          repoURL: https://github.com/thecooldrop/argokt3.git
+          targetRevision: HEAD
+        syncPolicy:
+          syncOptions:
+          - CreateNamespace=true
+    additionalProjects: 
+    - name: argocd
+      namespace: argocd
+      additionalLabels: {}
+      additionalAnnotations: {}
+      description: Argocd Project
+      sourceRepos:
+      - '*'
+      destinations:
+      - namespace: argocd
+        server: https://kubernetes.default.svc
+      clusterResourceWhitelist:
+      - group: '*'
+        kind: '*'
+      orphanedResources:
+        warn: false
