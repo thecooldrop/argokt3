@@ -33,14 +33,14 @@ argo-cd:
         destination:
           namespace: argocd
           server: https://kubernetes.default.svc
-        project: argocd
+        project: default
         source:
           helm:
             version: v3
             valueFiles:
             - values.yaml
-          path: nonprod/apps
-          repoURL: https://github.com/thecooldrop/argokt3.git
+          path: apps
+          repoURL: https://github.com/argoproj/argocd-example-apps
           targetRevision: HEAD
         syncPolicy:
           syncOptions:
