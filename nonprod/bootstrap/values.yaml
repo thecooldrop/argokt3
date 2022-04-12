@@ -28,6 +28,23 @@ argo-cd:
         syncPolicy:
           syncOptions:
           - CreateNamespace=true
+      - name: apps
+        namespace: argocd
+        destination:
+          namespace: argocd
+          server: https://kubernetes.default.svc
+        project: argocd
+        source:
+          helm:
+            version: v3
+            valueFiles:
+            - values.yaml
+          path: nonprod/apps
+          repoURL: https://github.com/thecooldrop/argokt3.git
+          targetRevision: HEAD
+        syncPolicy:
+          syncOptions:
+          - CreateNamespace=true
     additionalProjects: 
     - name: argocd
       namespace: argocd
